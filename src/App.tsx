@@ -282,42 +282,7 @@ function App() {
   }, [location]);
 
   useEffect(() => {
-    const fetchAllPhotos = async () => {
-      try {
-        let all: PhotoRecord[] = [];
-        let nextToken: string | null | undefined = undefined;
-        do {
-          const { data, nextToken: token }: { data: any[]; nextToken?: string | null } =
-            await client.models.Location.list({
-              limit: 1000,
-              nextToken,
-              selectionSet: ['id', 'date', 'description', 'photos'] as const,
-            });
-          all = all.concat(data.map(d => ({
-            id: d.id,
-            date: d.date ?? null,
-            description: d.description ?? null,
-            photos: d.photos ?? null,
-          })));
-          nextToken = token;
-        } while (nextToken);
-        setPhotosData(all);
-      } catch (err) {
-        console.error('Failed to fetch photos:', err);
-      }
-    };
-    fetchAllPhotos();
-  }, [location]);
-
-  useEffect(() => {
     handleUserName();
-  }, []);
-
-  useEffect(() => {
-    fetch("https://50fb42daa5.execute-api.us-east-1.amazonaws.com/test/getData")
-      .then(res => res.json())
-      .then(data => setUnitCosts(data))
-      .catch(err => console.error("Failed to fetch unit costs:", err));
   }, []);
 
 
